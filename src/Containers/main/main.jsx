@@ -49,7 +49,7 @@ class main extends Component {
       // } else {
       //   return <DefaultMain showLinkAccount={this.props.changeLinkAccount} account="linkEnergyAccountPage" />
       // }
-      return <p>/p></p>
+      return <p></p>
     }
   }
 }

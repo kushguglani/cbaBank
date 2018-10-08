@@ -1,19 +1,18 @@
 
 import {
-    linkAccount,
-    fetchTelcoAccounts,
-    getTelcoDashboard
+    linkTelcoAccountService,
+    linkBankAccountService,
+    fetchTelcoAccountsService,
+    getTelcoDashboardService
 } from '../service/httpService'
 
 export function save_signin_value_in_store(value) {
-    console.log(value);
     return {
         type: "SAVE_SIGNIN_VALUE_IN_STORE",
         payload: value
     }
 }
 export function save_login_value_in_store(value) {
-    console.log(value);
     return {
         type: "SAVE_LOGIN_VALUE_IN_STORE",
         payload: value
@@ -28,7 +27,7 @@ export function logOut() {
     }
 }
 
-// add account by cutomer id 
+// add telco account by cutomer id 
 export function addLinkAccount(custId, email) {
     function start() {
         return {
@@ -38,7 +37,21 @@ export function addLinkAccount(custId, email) {
 
     return function (dispatch) {
         dispatch(start());
-        return linkAccount(custId, email);
+        return linkTelcoAccountService(custId, email);
+    }
+}
+
+// add bank account by cutomer id 
+export function linkBankAccount(bankId,accountId, email) {
+    function start() {
+        return {
+            type: "LINK_ACCOUNT_REQUEST",
+        }
+    }
+
+    return function (dispatch) {
+        dispatch(start());
+        return linkBankAccountService(bankId, accountId, email);
     }
 }
 
@@ -55,19 +68,13 @@ export function fetchTelcoAccount(emailId, userName) {
             payload: value
         }
     }
-    // function successAddProduct(value){
-    //     return {
-    //         type: "ADD_PRODUCT_IN_STORE",
-    //         payload: value
-    //     }
-    // }
     return function (dispatch) {
         const value = {
             emailId,
             userName
         }
         // dispatch(noAccountLinked(value));
-        return fetchTelcoAccounts(emailId).then(res => {
+        return fetchTelcoAccountsService(emailId).then(res => {
             console.log(res);
            
             if (res.data.error) {
@@ -105,7 +112,7 @@ export function getTelcoDashboardData(cid, pid,pName) {
     }
     return function (dispatch) {
         dispatch(start())
-        return getTelcoDashboard(cid, pid).then(res=>{
+        return getTelcoDashboardService(cid, pid).then(res=>{
             dispatch(success(res.data))
             console.log(res.data)
         });

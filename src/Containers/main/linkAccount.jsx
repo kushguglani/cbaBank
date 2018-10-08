@@ -6,7 +6,9 @@ import classNames from 'classnames';
 import {
     addLinkAccount,
     fetchTelcoAccount,
-    getTelcoDashboardData
+    getTelcoDashboardData,
+    // getBankingDashboardAndLinkedAccounts,
+    linkBankAccount
 } from '../../action/';
 
 class linkAccount extends Component {
@@ -14,15 +16,18 @@ class linkAccount extends Component {
         super(props);
         this.state = {
             customerId: "",
-            linkError: undefined
+            linkError: undefined,
+            bankId:"",
+            accountId:""
+
         }
     }
-    customerIdChange = (event) => {
+    idChange = (event) => {
         this.setState({
-            customerId: event.target.value
+            [event.target.name]: event.target.value,
         })
-
     }
+    
     addTelcoLinkAccount = () => {
         console.log("qwerty");
         this.setState({ spinner: true });
@@ -42,6 +47,32 @@ class linkAccount extends Component {
                     this.props.getTelcoDashboardData(fetchAccounts[0].customerID, fetchAccounts[0].productId, fetchAccounts[0].productName);
 
                 })
+            }
+        })
+            .catch(err => {
+                console.log(err);
+                this.setState({ spinner: false, linkError: "Network Error/ Try Again" });
+            })
+    }
+    addBankLinkAccount = () => {
+        console.log("qwerty");
+        this.setState({ spinner: true });
+        this.props.linkBankAccount(this.state.bankId,this.state.accountId, this.props.email).then(res => {
+            console.log(res);
+            if (res.data.error) {
+                this.setState({ spinner: false, linkError: res.data.error });
+                console.log(res);
+            }
+            else {
+                this.setState({ spinner: false, linkError: "" });
+                // this.props.fetchTelcoAccount(this.props.email,)
+                // this.props.getBankingDashboardAndLinkedAccounts(this.props.email, this.props.userName).then(res => {
+                //     let fetchAccounts = this.props.telco.accountsFetch[0];
+                //     console.log(fetchAccounts);
+                //     console.log(fetchAccounts[0]);
+                //     this.props.getTelcoDashboardData(fetchAccounts[0].customerID, fetchAccounts[0].productId, fetchAccounts[0].productName);
+
+                // })
             }
         })
             .catch(err => {
@@ -77,7 +108,7 @@ class linkAccount extends Component {
                         type="text"
                         placeholder="Customer ID"
                         value={this.state.customerId}
-                        onChange={this.customerIdChange}
+                        onChange={this.idChange}
                     /> <br />
                     <label className={errorClassName}>{this.state.linkError}</label>
                     <button className="btn-full btn-green" onClick={this.addTelcoLinkAccount}> Submit </button>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -92,21 +123,21 @@ class linkAccount extends Component {
             linkAccountFields =
             <div className="inputFields">
                 <input
-                    name='customerId'
+                    name='accountId'
                     type="text"
                     placeholder="Account ID"
-                    value={this.state.customerId}
-                    onChange={this.customerIdChange}
+                    value={this.state.accountId}
+                    onChange={this.idChange}
                 /> <br />
                  <input
-                    name='customerId'
+                    name='bankId'
                     type="text"
                     placeholder="Bank ID"
-                    value={this.state.customerId}
-                    onChange={this.customerIdChange}
+                    value={this.state.bankId}
+                    onChange={this.idChange}
                 /> <br />
                 <label className={errorClassName}>{this.state.linkError}</label>
-                <button className="btn-full btn-green" onClick={this.addTelcoLinkAccount}> Submit </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button className="btn-full btn-green" onClick={this.addBankLinkAccount}> Submit </button>&nbsp;&nbsp;&nbsp;&nbsp;
                 <button className="btn-full btn-blue" onClick={() => this.props.showDashboard(productName)}>
                     Cancel
                 </button>
@@ -161,6 +192,8 @@ function initMapDispatchToProps(dispatch) {
         addLinkAccount,
         fetchTelcoAccount,
         getTelcoDashboardData,
+        // getBankingDashboardAndLinkedAccounts,
+        linkBankAccount
     }, dispatch)
 }
 

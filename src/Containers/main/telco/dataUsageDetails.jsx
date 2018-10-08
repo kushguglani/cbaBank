@@ -11,7 +11,22 @@ class DataUsageDetails extends Component {
         let labelData = labelApplication.map(curr => {
             return curr.charAt(0).toUpperCase() + curr.slice(1);
         })
-
+        //last week usage
+        let lastWeekUsage = 0;
+        for(let i=16; i<23; i++){
+            lastWeekUsage = lastWeekUsage + Number(this.props.dailyUsage[i].dataUsage);
+        }
+        //this week usage
+        console.log(this.props.dailyUsage[16].dataUsage);
+        let thisWeekUsage = 0;
+        for(let i=23; i<30; i++){
+            console.log(this.props.dailyUsage[i].dataUsage);
+            thisWeekUsage = thisWeekUsage + Number(this.props.dailyUsage[i].dataUsage);
+        }
+        
+        lastWeekUsage = Math.round(lastWeekUsage/1024*100)/100;
+        thisWeekUsage = Math.round(thisWeekUsage/1024*100)/100;
+        let differnceUsage = Math.round((lastWeekUsage - thisWeekUsage)*100)/100;
         console.log(labelData)
         let data = {
             datasets: [{
@@ -148,13 +163,15 @@ class DataUsageDetails extends Component {
                     </div>
                     <div className="donut-inner-half">
                         <p>Data Used</p>
-                        <h5>{Math.round((this.props.totalData / 1024) * 100) + " GB"}</h5>
+                        <h5>{Math.round((this.props.UsageData / 1024) * 100)/100 + " GB"}</h5>
                     </div>
                     <div>
                         <ul className="Weekdata">
-                            <li className="weekdatalist"><p>$ 123</p><label>Previous Week</label><span className="verLinedata"></span></li>
-                            <li className="weekdatalist"><p>$ 123</p><label>This Week</label><span className="verLinedata"></span></li>
-                            <li className="weekdatalist"><i className="fa fa-arrow-up"></i><p > $ 123</p><label>Difference</label></li>
+                            <li className="weekdatalist"><p> {lastWeekUsage+"GB"}</p><label>Previous Week</label><span className="verLinedata"></span></li>
+                            <li className="weekdatalist"><p> {thisWeekUsage+"GB"}</p><label>This Week</label><span className="verLinedata"></span></li>
+                            <li className="weekdatalist">{differnceUsage>0?"Up":"Do"}<p > 
+                            {Math.abs(differnceUsage) +"GB"}
+                            </p><label>Difference</label></li>
                         </ul>
                     </div>
                 </div>

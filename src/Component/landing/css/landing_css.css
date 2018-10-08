@@ -246,7 +246,7 @@
 .sidenav {
   font-size: 40%;
   margin-top: 80px;
-  height: 83%;
+  height: calc(100vh - 145px);
   width: 200px;
   position: fixed;
   z-index: 0;

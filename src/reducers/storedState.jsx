@@ -97,6 +97,7 @@ export default function storedState(state = InitialState, action) {
                 linkingFail: action.payload
             }
         case "ADD_FETCH_ACCOUNT":
+            console.log(state.telco.accountsFetch);
             return {
                 ...state,
                 productName: action.payload[0].productName,
