@@ -169,7 +169,7 @@ class DataUsageDetails extends Component {
                         <ul className="Weekdata">
                             <li className="weekdatalist"><p> {lastWeekUsage+"GB"}</p><label>Previous Week</label><span className="verLinedata"></span></li>
                             <li className="weekdatalist"><p> {thisWeekUsage+"GB"}</p><label>This Week</label><span className="verLinedata"></span></li>
-                            <li className="weekdatalist">{differnceUsage>0?"Up":"Do"}<p > 
+                            <li className="weekdatalist"><p > 
                             {Math.abs(differnceUsage) +"GB"}
                             </p><label>Difference</label></li>
                         </ul>
